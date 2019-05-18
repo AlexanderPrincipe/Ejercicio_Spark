@@ -4,11 +4,9 @@ from pyspark.sql import SQLContext
 
 sc = SparkContext("local", "_Ejercicio")
 sqlContext = SQLContext(sc)
-#rdd = sc.textFile("movie_metadata.csv").map(lambda line : line.split(","))
-#rdd_sin_cabeceras = rdd.mapPartitionsWithIndex(lambda idx, it: islice(it, 1, None) if idx == 0 else it )
-
-# Otra manera de leer csv
 rdd_sin_cabeceras = sqlContext.read.csv('movie_metadata.csv', header=True).rdd
+
+
 
 def mapCategories(x):
     if x[8] != "" and x[8] != None:
@@ -53,6 +51,8 @@ directores = rdd_sin_cabeceras.filter(lambda x: x[1]!=None and x[25] is not None
 for d in directores:
     print(d)
 
+
+
 print("DIRECTORES CON MAS LIKES")
 
 directores = rdd_sin_cabeceras.filter(lambda x: x[1]!=None and x[27] is not None) \
@@ -64,6 +64,9 @@ directores = rdd_sin_cabeceras.filter(lambda x: x[1]!=None and x[27] is not None
 
 for d in directores:
     print(d)
+
+
+
 
 print("ACTORES CON MAS LIKES")
 actores = rdd_sin_cabeceras.filter(lambda x:x[10]!=None and x[7] is not None) \
